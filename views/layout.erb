@@ -1,1 +1,10 @@
-<a href="/sign-in">Logout</a>
+<body>
+	<% if flash[:alert] %>
+		<div class="flash_alert">
+			<%= flash[:alert] %>
+		</div>
+	<% end %>
+
+
+<%= yield %>
+</body>
