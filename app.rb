@@ -9,7 +9,12 @@ enable :sessions
 
 get '/' do
 	@user = current_user
-	erb :'sign-in'	
+	if @user
+		@posts = Post.all 
+		erb :index
+	else
+	redirect '/sign-in'
+	end	
 end
 
 get '/sign-in' do 
@@ -18,7 +23,7 @@ end
 
 get '/index' do
 	@user = current_user
-	@post = Post.all
+	@posts = Post.all
 	erb :index
 end
 
@@ -30,6 +35,7 @@ post '/sign-in' do
 	@user = User.where(email: params[:email]).last
 	if @user && @user.password == params[:password]
 		session[:user_id] = @user.id
+		flash[:notice] = "You have successfully signed in."
 		redirect '/index'
 	else
 		flash[:alert] = "Your email or password is incorrect."
